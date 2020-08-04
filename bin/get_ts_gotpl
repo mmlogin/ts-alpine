@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -x
+
+arch="alpine-linux-amd64"
+repo_user="mtilson"
+repo_slug="ts-gotpl"
+url_base="https://github.com/${repo_user}/${repo_slug}/releases"
+url_with_tag=`curl -fsSLI -o /dev/null -w %{url_effective} ${url_base}/latest && echo`
+tag="${url_with_tag##*tag/}"
+url_download=${url_base}/download/${tag}/${repo_slug}-${arch}-${tag}.tar.gz
+
+wget -qO- "${url_download}" | tar xz -C /usr/local/bin;
+chmod +x /usr/local/bin/${repo_slug}
